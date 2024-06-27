@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./img/mexican-hat.png" sizes="96x96">
+    <link rel="stylesheet" href="style.css">
+    <title>El Pollo Loco</title>
+    <script src="models/world.class.js"></script>
+    <script src="models/drawable-object.class.js"></script>
+    <script src="models/movable-object.class.js"></script>
+    <script src="models/character.class.js"></script>
+    <script src="models/chicken.class.js"></script>
+    <script src="models/small_chicken.class.js"></script>
+    <script src="models/endboss.class.js"></script>
+    <script src="models/cloud.class.js"></script>
+    <script src="models/bg_object.class.js"></script>
+    <script src="models/statusbar-object.class.js"></script>
+    <script src="models/bottle.class.js"></script>
+    <script src="models/coin.class.js"></script>
+    <script src="models/statusbar-health.class.js"></script>
+    <script src="models/bottle-bar.class.js"></script>
+    <script src="models/coin-bar.class.js"></script>
+    <script src="models/statusbar-endboss.class.js"></script>
+    <script src="models/statusbar-icon.class.js"></script>
+    <script src="models/keyboard.class.js"></script>
+    <script src="models/level.class.js"></script>
+    <script src="models/throwable-object.class.js"></script>
+    <script src="levels/level1.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/sound.js"></script>
+</head>
+
+<body>
+
+    <!-- <h1>El pollo loco</h1> -->
+
+    <div id="mobile" class="d-none">
+        <p>Please rotate your phone</p>
+    </div>
+    <div id="loading-screen" class="loading-screen mobile-height mobile-style d-none">
+        <h1>Loading</h1>
+        <img src="./img/loading-img.gif" alt="#">
+    </div>
+    <div class="mobile-height" id="game-container">
+        <div id="button-container">
+            <button id="start-btn" class="start-screen-btns" onclick="startGame()">Start</button>
+            <button id="controls" class="start-screen-btns" onclick="openControls()">Controls</button>
+            <button id="story" class="start-screen-btns" onclick="openStoryContainer()">Story</button>
+            <button class="start-screen-btns" onclick="openImpressumContainer()">Imprint</button>
+        </div>
+        <div class="startscreen-container mobile-height" id="startscreen-container">
+            <img class="start-screen mobile-style mobile-height" id="start-screen"
+                src="img/9_intro_outro_screens/start/startscreen_2.png">
+        </div>
+        <canvas class="mobile-height d-none" id="canvas" width="820" height="480"></canvas>
+        <div id="button-container-ingame" class="button-container-ingame d-none">
+            <img id="mute-sound" class="sound-btn ingame-btns" src="img/mute.png" onclick="muteSound()">
+            <img id="unmute-sound" class="sound-btn ingame-btns d-none" src="img/unmute.png" onclick="unmuteSound()">
+            <img id="fullscreen-btn" class="fullscreen-btn ingame-btns" src="img/fullscreen.png"
+                onclick="fullscreen()">
+            <img id="exit-fullscreen" class="fullscreen-btn ingame-btns d-none" src="./img/exit-fullscreen.png" alt="#"
+                onclick="exitFullscreen(); removeFullscreenStyle()">
+            <img id="controls-ingame" class="controls ingame-btns" src="img/controls.png" onclick="openIngameControls()">
+        </div>
+        <div id="mobile-btns-bottom" class="hide d-none">
+            <div class="mobile-btns-flex">
+                <div class="mobile-btns">
+                    <img id="btn-left" src="img/arrow-left.png">
+                </div>
+                <div class="mobile-btns">
+                    <img id="btn-right" src="img/arrow-right.png">
+                </div>
+            </div>
+
+            <div class="mobile-btns-flex">
+                <div class="mobile-btns">
+                    <img id="btn-jump" src="img/arrow-up.png">
+                </div>
+                <div class="mobile-btns">
+                    <img id="btn-throw" src="img/throw-arrow.png">
+                </div>
+            </div>
+        </div>
+        <img class="game-over-screen-img mobile-style mobile-height d-none" id="game-over-screen-img"
+            src="./img/9_intro_outro_screens/game_over/game over!.png" alt="#">
+        <div id="game-won-container" class="game-over-screen mobile-style mobile-height d-none">
+            <div>
+                <p>After a long fight, Pepe finally reached the source of the evil controlling the chickens. It
+                    was a massive rooster, towering above him with glowing eyes and razor-sharp talons.
+
+                    Pepe summoned all of his strength and launched himself at the rooster. The battle was long and
+                    grueling, but
+                    Pepe persevered. Finally, with one final blow, the rooster was defeated, and the chickens were freed
+                    from its
+                    control.
+
+                    The village rejoiced as Pepe returned, exhausted but victorious. The people hailed him as a hero,
+                    and Pepe
+                    knew that he had done what he was born to do - protect his people from all threats, no matter how
+                    bizarre
+                    they may be.
+                </p>
+                </p>
+            </div>
+            <button class="buttons" onclick="mainMenu()">MAIN MENU</button>
+        </div>
+        <div id="restart-container" class="game-over-screen mobile-height d-none">
+            <img class="game-over-screen-img" id="game-over-screen-img"
+                src="./img/9_intro_outro_screens/game_over/oh no you lost!.png" alt="#">
+            <div class="game-over-btns">
+                <button class="buttons" onclick="restartGame()">RESTART GAME</button>
+                <button class="buttons" onclick="mainMenu()">MAIN MENU</button>
+            </div>
+        </div>
+        <div id="controls-container" class="controls-story-container mobile-height mobile-style d-none">
+            <img id="controls-container-back" class="controls-story-container-back" src="img/close-icon.png"
+                onclick="closeControlsContainer()">
+            <img id="controls-container-ingame-back" class="controls-story-container-back d-none"
+                src="img/close-icon.png" onclick="closeControlsContainerIngame()">
+            <h2 class="game-controls">Game Controls</h2>
+            <div class="control-explanation-container">
+                <div class="control-icons">
+                    <div class="keyboard-btn"><img src="img/arrow-left.png">&nbsp&nbsp&nbsp/&nbsp&nbsp&nbspA</div>
+                    <div class="keyboard-btn"><img src="img/arrow-right.png">&nbsp&nbsp&nbsp/&nbsp&nbsp&nbspD</div>
+                    <div class="keyboard-btn"><img src="img/arrow-up.png">&nbsp&nbsp&nbsp/&nbsp&nbsp&nbsp<img
+                            class="keyboard-btn" src="img/space-btn.png"></div>
+                    <div class="keyboard-btn"><img src="img/arrow-down.png">&nbsp&nbsp&nbsp/&nbsp&nbsp&nbspE</div>
+                </div>
+                <div class="control-explanation">
+                    <p class="pepe-order">Move Left</p>
+                    <p class="pepe-order">Move Right</p>
+                    <p class="pepe-order">Jump</p>
+                    <p class="pepe-order">Throw</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="story-container" class="controls-story-container mobile-height mobile-style d-none">
+        <img id="story-container-back" class="controls-story-container-back" src="img/close-icon.png"
+            onclick="closeStoryContainer()">
+        <p>
+            Pepe was a bored mexican farmer. Nothing special ever happened in his village. But one day, a
+            strange phenomenon occurred. Chickens began to descend upon the village from all sides.
+            Pepe knew that this was no ordinary chicken invasion and that he needed to act fast.
+
+            Pepe quickly assessed the situation and realized that the chickens were being controlled by a powerful and
+            evil force. He set out to find the source of this evil and put an end to it once and for all.
+
+            As he battled his way through the endless hordes of chickens, Pepe could feel his strength waning. The
+            chickens were relentless, and he knew that he would need to find a way to turn the tide of battle.
+    </div>
+    <div id="impressum-container" class="controls-story-container mobile-height mobile-style d-none">
+        <img id="story-container-back" class="controls-story-container-back" src="img/close-icon.png"
+            onclick="closeImpressumContainer()">
+    <p><h1 class="impressum">Impressum</h1>
+        <h2 id="m46">Diensteanbieter</h2>
+        <p class="impressumP">Matthias Hammelehle</p>
+        <p class="impressumP">Vendelaustraße 45</p>
+        <p class="impressumP">72622 Nürtingen</p>
+        
+        <h2 id="m56">Kontaktmöglichkeiten</h2><p>E-Mail-Adresse: <a href="mailto:mahammelehle@outlook.de">mahammelehle@outlook.de</a></p>
+        
+        <h2 id="m153">Vertretungsberechtigte Personen</h2>
+        <p class="seal"><a href="https://datenschutz-generator.de/" 
+            title="Rechtstext von Dr. Schwenke - für weitere Informationen bitte anklicken." 
+            target="_blank" rel="noopener noreferrer nofollow">
+            Erstellt mit kostenlosem Datenschutz-Generator.de von Dr. Thomas Schwenke</a></p></p>
+            </div>
+    </div>
+
+    </div>
+</body>
+
+</html>
